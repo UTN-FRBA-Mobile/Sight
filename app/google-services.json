@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "773627503004",
+    "firebase_url": "https://sight-6c763.firebaseio.com",
+    "project_id": "sight-6c763",
+    "storage_bucket": "sight-6c763.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:773627503004:android:f03ed0de931ea586c5e859",
+        "android_client_info": {
+          "package_name": "ar.com.sight.andoid_test"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "773627503004-2p4mbmb4racodmm1sl4v0r9a90b3n0u2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBob78oDf6EkSM3LFWenQxWbXFcF4hesVw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "773627503004-2p4mbmb4racodmm1sl4v0r9a90b3n0u2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:773627503004:android:0f1fbfdd71618b1fc5e859",
+        "android_client_info": {
+          "package_name": "rsa.sight"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "773627503004-2p4mbmb4racodmm1sl4v0r9a90b3n0u2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBob78oDf6EkSM3LFWenQxWbXFcF4hesVw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "773627503004-2p4mbmb4racodmm1sl4v0r9a90b3n0u2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

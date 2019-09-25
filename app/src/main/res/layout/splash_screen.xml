@@ -1,0 +1,34 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SplashScreen" >
+
+    <ImageView
+        android:id="@+id/sigloplogo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:contentDescription="@string/app_name"
+        android:scaleType="fitXY"
+        android:src="@drawable/siglop" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:id="@+id/descripcionSiglop"
+        android:layout_below="@+id/sigloplogo"
+        android:text="@string/app_description"
+        android:layout_alignRight="@+id/sigloplogo"
+        android:layout_alignEnd="@+id/sigloplogo"
+        android:layout_alignLeft="@+id/sigloplogo"
+        android:layout_alignStart="@+id/sigloplogo"
+        android:textStyle="bold|italic"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentStart="false"
+        android:autoText="false"
+        android:gravity="center_horizontal" />
+
+</RelativeLayout>
