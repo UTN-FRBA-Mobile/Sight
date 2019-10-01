@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/degrade"
+    tools:context=".configuracion.CambiarContraseniaActivity">
+
+    <FrameLayout
+        android:id="@+id/frameHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent" >
+
+    </FrameLayout>
+
+    <EditText
+        android:id="@+id/txtPasswordActual"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margen_full_with"
+        android:ems="10"
+        android:hint="@string/lblPasswordActual"
+        android:inputType="textPassword"
+        app:layout_constraintTop_toBottomOf="@id/frameHeader"/>
+
+    <EditText
+        android:id="@+id/txtPasswordNueva"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margen_full_with"
+        android:ems="10"
+        android:hint="@string/lblPasswordNueva"
+        android:inputType="textPassword"
+        app:layout_constraintTop_toBottomOf="@id/txtPasswordActual"/>
+
+    <EditText
+        android:id="@+id/txtPasswordConfirmacion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margen_full_with"
+        android:ems="10"
+        android:hint="@string/lblPasswordConfirmacion"
+        android:inputType="textPassword"
+        app:layout_constraintTop_toBottomOf="@id/txtPasswordNueva" />
+
+    <Button
+        android:id="@+id/btnCambiarContrasenia"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margen_full_with"
+        android:text="@string/btnCambiarcontraseia"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
