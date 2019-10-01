@@ -1,79 +1,50 @@
 <resources>
     <string name="app_name">Sight</string>
-    <string name="app_description">Sistema para denuncias del control de alarma vecinal</string>
-    <string name="preferences">Configuracion</string>
 
-    <!-- LOGIN -->
-    <string name="prompt_usuario">Usuario</string>
-    <string name="prompt_password">Contraseña</string>
-    <string name="action_ingresar">Ingresar</string>
-    <string name="action_config">Configuración</string>
-    <string name="error_usuario_requerido">Debe ingresar el usuario</string>
-    <string name="error_usuario_invalido">El usuario no existe</string>
-    <string name="error_password_requerido">Debe ingresar la contraseña para ese usuario</string>
-    <string name="error_password_incorrecto">La contraseña ingresada para ese usuario es incorrecta</string>
-    <string name="error_conexion">No se pudo conectar con la base de datos</string>
-    <!-- LOGIN -->
+    <string name="lblEmail">Email</string>
+    <string name="lblPassword">Password</string>
 
-    <!-- MENU PRINCIPAL -->
-    <string name="mensaje_bienvenida">Bienvenido</string>
-    <string name="boton_consulta">Consultas de Stock y Precios</string>
-    <string name="boton_agenda">Agenda</string>
-    <string name="boton_salir">Salir</string>
-    <!-- MENU PRINCIPAL -->
+    <string name="btnIngresar">Ingresar</string>
+    <string name="btnGuardar">Guardar</string>
 
-    <!-- AGENDA -->
-    <string name="error_contacto_requerido">Debe ingresar un contacto para buscar</string>
-    <!-- AGENDA -->
+    <string name="btnMiFichaMedica">Mi Ficha Médica</string>
+    <string name="btnMisVecinos">Mis Vecinos de Confianza</string>
+    <string name="btnMiContrasenia">Mi Contraseña</string>
+    <string name="btnMisDenuncias">Mis Denuncias</string>
+    <string name="btnConfiguracion">Configuración</string>
+    <string name="btnBotonBlueTooth">Botón Bluetooth</string>
+    <string name="btnCamara">Adjuntar Foto</string>
+    <string name="btnLogout">Desloguearme</string>
 
-    <!-- CONSULTA DE STOCK Y PRECIOS -->
-    <string name="error_producto_requerido">Debe ingresar una descripción para buscar</string>
-    <string name="error_producto_existencia">El producto no existe</string>
-    <!-- CONSULTA DE STOCK Y PRECIOS -->
+    <string name="tituloMiFichaMedica">Mi Ficha Médica</string>
+    <string name="tituloMisVecinos">Mis Vecinos de Confianza</string>
+    <string name="tituloMiContrasenia">Mi Contraseña</string>
+    <string name="tituloMisDenuncias">Mis Denuncias</string>
+    <string name="tituloConfiguracion">Configuración</string>
 
-    <!-- CONFIGURACION -->
-    <string name="error_ip_requerido">Debe ingresar el ip del server</string>
-    <string name="error_db_user_requerido">Debe ingresar el username de la BD</string>
-    <string name="error_db_pass_requerido">Debe ingresar la password del usuario de la BD</string>
-    <string name="error_db_name_requerido">Debe ingresar el nombre de la BD</string>
-    <!-- CONFIGURACION -->
+    <string name="success_ficha_medica">Ficha Médica Guardada</string>
+    <string name="success_contrasenia_cambiada">La contraseña se ha modificado correctamente</string>
 
-    <!-- CONEXIÓN BASE DE DATOS DEFAULT -->
-    <string name="ip_server">alarmas.ctmelectronica.com.ar</string>
-    <string name="port_server">13655</string>
-    <string name="database">sight</string>
-    <string name="username">utn</string>
-    <string name="password">Proy2019!</string>
-    <!-- CONEXIÓN BASE DE DATOS -->
+    <string name="error_usuario_requerido">Debe ingresar el email</string>
+    <string name="error_password_requerido">Debe ingresar la contraseña</string>
+    <string name="error_password_incorrecto">El email y/o contraseña son incorrectos</string>
 
+    <string name="error_ficha_medica_no_existente">El usuario no posee ficha médica</string>
+    <string name="error_ficha_medica_requerida">Ficha Médica requerida</string>
 
-    <!-- Locacion -->
-    <string name="try_again">Intente nuevamente</string>
-    <string name="location_not_deter">No se determina locacion</string>
-    <!-- Locacion -->
+    <string name="error_conexion">Error: Compruebe que tiene conexión a internet</string>
+    <string name="tituloPerfil">Mi Perfil</string>
+    <string name="tituloBlueTooth">Botón Bluetooth</string>
+    <string name="tituloCambiarContrasenia">Cambiar Contraseña</string>
+    <string name="tituloSos">SOS</string>
+    <string name="btnCambiarcontraseia">Guardar</string>
+    <string name="lblPasswordConfirmacion">Confirmar Contraseña</string>
+    <string name="lblPasswordNueva">Contraseña Nueva</string>
+    <string name="lblPasswordActual">Contraseña Actual</string>
 
+    <!--    Permissions    -->
+    <string name="permission_rationale_location">Access to the location service is required to demonstrate the \'my location\' feature, which shows your current location on the map.</string>
+    <string name="location_permission_denied">This sample requires location permission to enable the \'my location\' layer. Please try again and grant access to use the location.\nIf the permission has been permanently denied, it can be enabled from the System Settings &gt; Apps &gt; \'Google Maps API Demos\'.</string>
+    <string name="permission_required_toast">Location permission is required for this demo.</string>
 
-    <string name="title_activity_maps">Wander</string>
-    <string name="normal_map">Normal Map</string>
-    <string name="hybrid_map">Hybrid Map</string>
-    <string name="satellite_map">Satellite Map</string>
-    <string name="terrain_map">Terrain Map</string>
-    <string name="lat_long_snippet">Lat: %1$.5f, Long: %2$.5f</string>
-    <string name="dropped_pin">Dropped Pin</string>
-    <string name="poi">poi</string>
-
-    <string name="fcm_message">FCM Message</string>
-
-    <string name="quickstart_message">Click the SUBSCRIBE TO WEATHER button below to subscribe to the
-        weather topic. Messages sent to the weather topic will be received. The LOG TOKEN button logs the
-        InstanceID token to logcat.</string>
-    <string name="subscribe_to_weather">Subscribe To Weather</string>
-    <string name="log_token">Log Token</string>
-
-    <string name="msg_subscribed">Subscribed to weather topic</string>
-    <string name="msg_token_fmt" translatable="false">InstanceID Token: %s</string>
-
-
-    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
-    <string name="default_notification_channel_name" translatable="true">Weather</string>
 </resources>

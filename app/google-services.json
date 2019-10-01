@@ -37,6 +37,43 @@
     },
     {
       "client_info": {
+        "mobilesdk_app_id": "1:773627503004:android:830ce514b54c49c5c5e859",
+        "android_client_info": {
+          "package_name": "ar.com.sight.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "773627503004-42j00qt2j3oolm5bujh4t0hl4irb9639.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ar.com.sight.android",
+            "certificate_hash": "a3906dc6a27cad220e710daafecc9139adee1372"
+          }
+        },
+        {
+          "client_id": "773627503004-2p4mbmb4racodmm1sl4v0r9a90b3n0u2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBob78oDf6EkSM3LFWenQxWbXFcF4hesVw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "773627503004-2p4mbmb4racodmm1sl4v0r9a90b3n0u2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:773627503004:android:0f1fbfdd71618b1fc5e859",
         "android_client_info": {
           "package_name": "rsa.sight"

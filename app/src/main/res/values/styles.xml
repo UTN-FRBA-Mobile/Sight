@@ -1,32 +1,72 @@
 <resources>
 
+    <style name="EditText" parent="TextAppearance.AppCompat">
+    </style>
+
+    <style name="TextView" parent="TextAppearance.AppCompat">
+    </style>
+
+    <style name="TextEventoFechaView" parent="TextAppearance.AppCompat">
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">@dimen/titulo</item>
+        <item name="android:textColor">@color/colorAccent</item>
+    </style>
+
+    <style name="TextEventoTipoView" parent="TextAppearance.AppCompat">
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">@dimen/titulo</item>
+        <item name="android:textColor">@color/colorAccent</item>
+    </style>
+
+    <style name="TextEventoEstadoView" parent="TextAppearance.AppCompat">
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">@dimen/titulo</item>
+        <item name="android:textColor">@color/colorAccent</item>
+    </style>
+
+    <style name="TextTitleView" parent="TextAppearance.AppCompat">
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">@dimen/titulo</item>
+        <item name="android:textColor">@color/colorAccent</item>
+    </style>
+
+    <style name="TextTableHeaderView" parent="TextAppearance.AppCompat">
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">@dimen/textoEncabezadoTabla</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:paddingStart">10dp</item>
+        <item name="android:paddingEnd">10dp</item>
+    </style>
+
+    <style name="TextTableRowView" parent="TextAppearance.AppCompat">
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">@dimen/textoTabla</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:paddingStart">10dp</item>
+        <item name="android:paddingEnd">10dp</item>
+    </style>
+
+    <style name="ImageButton" parent="Widget.AppCompat.ImageButton">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="Button" parent="TextAppearance.AppCompat">
+        <item name="android:background">@drawable/boton</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">@dimen/boton</item>
+    </style>
+
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-    </style>
-
-    <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
-        <item name="android:windowTitleBackgroundStyle">@style/WindowTitleBackground</item>
         <item name="android:windowFullscreen">true</item>
-
+        <item name="android:editTextStyle">@style/EditText</item>
+        <item name="android:textViewStyle">@style/TextView</item>
+        <item name="android:buttonStyle">@style/Button</item>
     </style>
-
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
-
-    <style name="WindowTitleBackground">
-        <item name="android:background">#000000</item>
-    </style>
-
-
-
-
-
-
 
 </resources>

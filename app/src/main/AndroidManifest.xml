@@ -1,117 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="rsa.sight">
+    package="ar.com.sight.android">
 
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="android.permission.READ_PROFILE" />
-    <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.RECORD_VIDEO"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <uses-feature android:name="android.hardware.location.gps" android:required="false"/>
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
 
     <application
-        android:name="rsa.sight.MyApplication"
         android:allowBackup="true"
         android:icon="@drawable/sight"
         android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme.NoActionBar">
-
-
-
-        <activity
-            android:name="rsa.sight.SplashScreen"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait">
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:theme="@style/AppTheme">
+        <activity android:name=".SosActivity"></activity>
+        <activity android:name=".configuracion.BotonBluetoothActivity" />
+        <activity android:name=".configuracion.CambiarContraseniaActivity" />
+        <activity android:name=".perfil.MisVecinosActivity" />
+        <activity android:name=".perfil.MisDenunciasActivity" />
+        <activity android:name=".perfil.FichaMedicaActivity" />
+        <activity android:name=".ConfiguracionActivity" />
+        <activity android:name=".PerfilActivity" />
+        <activity android:name=".MenuPrincipalActivity" />
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="rsa.sight.LoginActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="rsa.sight.MenuPrincipal"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="rsa.sight.PerfilActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="rsa.sight.DenunciasActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="rsa.sight.FichaMedicaActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="rsa.sight.VecinosConfianzaActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="rsa.sight.AgregarVecinoActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="rsa.sight.RoboActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="rsa.sight.SosActivity"
-            android:screenOrientation="portrait" />
-        <activity android:name="rsa.sight.ConfigActivity"></activity>
 
-
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAV8fmtvWbXpOBxoHIaBZpOyJMm_iTR6e8"
-
-
-            />
-
-        <meta-data
-            tools:replace="android:value"
-            android:name="android.support.VERSION"
-            android:value="26.1.0" />
-
-
-        <service
-            android:name=".MyFirebaseMessagingService">
+        <service android:name=".RecibeMensaje">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
-
-            </intent-filter>
-            <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
             </intent-filter>
         </service>
 
-
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
-            android:resource="@drawable/sight" />
+            android:resource="@drawable/ic_launcher_background" />
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/colorAccent" />
+        <meta-data
+            android:name="firebase_messaging_auto_init_enabled"
+            android:value="true" />
 
         <meta-data
-            android:name="com.google.firebase.messaging.default_notification_channel_id"
-            android:value="fcm"/>
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAV8fmtvWbXpOBxoHIaBZpOyJMm_iTR6e8"  />
 
-        <meta-data android:name="firebase_messaging_auto_init_enabled"
-            android:value="false" />
+        <service android:name=".RecibeMensaje">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
 
-        <meta-data android:name="firebase_analytics_collection_enabled"
-            android:value="false" />
-
-
-
-
-
-
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="ar.com.sight.android.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths_app"></meta-data>
+        </provider>
     </application>
-
 </manifest>

@@ -1,2 +1,0 @@
-# Sight
-Sight
