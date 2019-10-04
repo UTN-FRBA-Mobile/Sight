@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#007FDB</color>
-    <color name="colorPrimaryDark">#00e0db</color>
+    <color name="colorPrimary">#ffffff</color>
+    <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">#ffffff</color>
 
-    <color name="degradeEnd">#007FDB</color>
-    <color name="degradeStart">#00e0db</color>
+    <color name="degradeEnd">#ffffff</color>
+    <color name="degradeStart">#ffffff</color>
 
     <color name="shadow">#4D7776</color>
 
