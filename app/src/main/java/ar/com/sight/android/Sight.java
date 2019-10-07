@@ -3,6 +3,9 @@ package ar.com.sight.android;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.location.Location;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Handler;
 import android.widget.Toast;
 
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -20,10 +23,14 @@ import ar.com.sight.android.api.modelos.Usuario;
 import ar.com.sight.android.comun.Gps;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.http.Multipart;
+import retrofit2.http.Part;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -138,9 +145,7 @@ public class Sight {
         sendEvento(context, getTipoEventoReciente(context));
     }
 
-    public static void sendEvento(Context context, Integer tipo_evento){
-        final String[] mensajebd = {""};
-
+    public static void sendEvento(final Context context, Integer tipo_evento){
         try {
 
             Gps gps = Gps.newInstance();
@@ -150,127 +155,75 @@ public class Sight {
                     tipo_evento, gps.getLatitude(), gps.getLongitude()).enqueue(new Callback<Void>() {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
-                    mensajebd[0] = "Evento Enviado: La ayuda va en camino.";
+                    Toast mensaje = Toast.makeText(context, "Evento Enviado: La ayuda va en camino", Toast.LENGTH_SHORT);
+                    mensaje.show();
                 }
 
                 @Override
                 public void onFailure(Call<Void> call, Throwable t) {
-                    mensajebd[0] = "Error. Intente nuevamente.";
+                    Toast mensaje = Toast.makeText(context, "ERROR: Intente nuevamente", Toast.LENGTH_SHORT);
+                    mensaje.show();
                 }
             });
         }
-        catch (Exception ex)
-        {
-            mensajebd[0] = ex.getMessage();
+        catch (Exception ex) {
+            Toast mensaje = Toast.makeText(context, ex.getMessage(), Toast.LENGTH_SHORT);
+            mensaje.show();
         }
-
-        Toast mensaje = Toast.makeText(context, mensajebd[0], Toast.LENGTH_SHORT);
-        mensaje.show();
 
         setEventoReciente(context, tipo_evento);
     }
 
-    public static void sendImagenAdicional(Context context, String filePath) {
-        final String[] mensajebd = {""};
+    public static void sendImagenAdicional(final Context context, String filePath) {
         try {
             //Create a file object using file path
             File file = new File(filePath);
-            // Create a request body with file and image media type
-            RequestBody fileReqBody = RequestBody.create(MediaType.parse("image/*"), file);
-            // Create MultipartBody.Part using file request-body,file name and part name
-            MultipartBody.Part part = MultipartBody.Part.createFormData("upload", file.getName(), fileReqBody);
-            //Create request body with text description and text media type
-            RequestBody description = RequestBody.create(MediaType.parse("text/plain"), "image-type");
-            //
-            Call call = APIAdapter.crearConexion().setArchivoAdicional(getToken(context), part, description);
-            call.enqueue(new Callback() {
+
+            RequestBody requestFile =
+                    RequestBody.create(
+                            MediaType.parse("image/*"),
+                            file
+                    );
+
+            // MultipartBody.Part is used to send also the actual file name
+            MultipartBody.Part body =
+                    MultipartBody.Part.createFormData("pepe", file.getName(), requestFile);
+
+            // add another part within the multipart request
+            String descriptionString = "hello, this is description speaking";
+            RequestBody description =
+                    RequestBody.create(
+                            okhttp3.MultipartBody.FORM, descriptionString);
+
+            Call call = APIAdapter.crearConexion(String.class, new StringDeserializador()).setArchivoAdicional(getToken(context),
+                    //"multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
+                    //"application/x-www-form-urlencoded","gzip, deflate",
+                    //"*/*", "no-cache", "keep-alive",
+                    description, body);
+            call.enqueue(new Callback<String>() {
                 @Override
-                public void onResponse(Call call, Response response) {
+                public void onResponse(Call<String> call, Response<String> response) {
+                    Toast mensaje = Toast.makeText(context, response.body(), Toast.LENGTH_SHORT);
+                    mensaje.show();
                 }
                 @Override
-                public void onFailure(Call call, Throwable t) {
+                public void onFailure(Call<String> call, Throwable t) {
+                    Toast mensaje = Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT);
+                    mensaje.show();
                 }
 
             });
         }
         catch (Exception ex) {
-            mensajebd[0] = ex.getMessage();
+            Toast mensaje = Toast.makeText(context, ex.getMessage(), Toast.LENGTH_SHORT);
+            mensaje.show();
         }
-
-        Toast mensaje = Toast.makeText(context, mensajebd[0], Toast.LENGTH_SHORT);
-        mensaje.show();
-    }
-
-    public static void sendVideoAdicional(Context context, String filePath) {
-        final String[] mensajebd = {""};
-        try {
-            //Create a file object using file path
-            File file = new File(filePath);
-            // Create a request body with file and image media type
-            RequestBody fileReqBody = RequestBody.create(MediaType.parse("video/*"), file);
-            // Create MultipartBody.Part using file request-body,file name and part name
-            MultipartBody.Part part = MultipartBody.Part.createFormData("upload", file.getName(), fileReqBody);
-            //Create request body with text description and text media type
-            RequestBody description = RequestBody.create(MediaType.parse("text/plain"), "video-type");
-            //
-            Call call = APIAdapter.crearConexion().setArchivoAdicional(getToken(context), part, description);
-            call.enqueue(new Callback() {
-                @Override
-                public void onResponse(Call call, Response response) {
-                }
-                @Override
-                public void onFailure(Call call, Throwable t) {
-                }
-
-            });
-        }
-        catch (Exception ex) {
-            mensajebd[0] = ex.getMessage();
-        }
-
-        Toast mensaje = Toast.makeText(context, mensajebd[0], Toast.LENGTH_SHORT);
-        mensaje.show();
-    }
-
-    public static void sendAudioAdicional(Context context, String filePath) {
-        final String[] mensajebd = {""};
-        try {
-            //Create a file object using file path
-            File file = new File(filePath);
-            // Create a request body with file and image media type
-            RequestBody fileReqBody = RequestBody.create(MediaType.parse("audio/*"), file);
-            // Create MultipartBody.Part using file request-body,file name and part name
-            MultipartBody.Part part = MultipartBody.Part.createFormData("upload", file.getName(), fileReqBody);
-            //Create request body with text description and text media type
-            RequestBody description = RequestBody.create(MediaType.parse("text/plain"), "audio-type");
-            //
-            Call call = APIAdapter.crearConexion().setArchivoAdicional(getToken(context), part, description);
-            call.enqueue(new Callback() {
-                @Override
-                public void onResponse(Call call, Response response) {
-                }
-                @Override
-                public void onFailure(Call call, Throwable t) {
-                }
-
-            });
-        }
-        catch (Exception ex) {
-            mensajebd[0] = ex.getMessage();
-        }
-
-        Toast mensaje = Toast.makeText(context, mensajebd[0], Toast.LENGTH_SHORT);
-        mensaje.show();
     }
 
     public static void sendMesnajeAdicional(Context context, String mensaje){
         final String[] mensajebd = {""};
 
         try {
-
-            Gps gps = Gps.newInstance();
-            gps.getLocacion(context);
-
             APIAdapter.crearConexion(String.class, new StringDeserializador()).setMensajeAdicional(getToken(context), mensaje).enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {

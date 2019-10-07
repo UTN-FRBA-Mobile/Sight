@@ -1,9 +1,8 @@
 package ar.com.sight.android;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.FileProvider;
-
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -12,118 +11,115 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.FragmentTransaction;
 
 import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import ar.com.sight.android.R;
-import ar.com.sight.android.Sight;
+import ar.com.sight.android.comun.AdicionalesActivity;
+import ar.com.sight.android.comun.EncabezadoFragment;
+import ar.com.sight.android.perfil.FichaMedicaActivity;
 
-public class SosActivity extends AppCompatActivity implements
+/**
+ * This shows how to create a simple activity with a map and a marker on the map.
+ */
+public class SosActivity extends AppCompatActivity  implements
         GoogleMap.OnMyLocationButtonClickListener,
         GoogleMap.OnMyLocationClickListener,
         OnMapReadyCallback,
-        SurfaceHolder.Callback {
+        ActivityCompat.OnRequestPermissionsResultCallback {
 
-    static final int REQUEST_TAKE_PHOTO = 1;
-    static final int REQUEST_VIDEO_CAPTURE = 2;
-    static final int REQUEST_AUDIO_CAPTURE = 3;
-    static final int REQUEST_LOCATION = 4;
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
+    private static final int CAMERA_PERMISSION_REQUEST_CODE = 5;
+    private static final int STORAGE_PERMISSION_REQUEST_CODE = 7;
+    private boolean mPermissionDenied = false;
     private GoogleMap mMap;
-
-    private static final int REQUEST_FOTO_PERMISSION = 100;
-
-    SurfaceView surface;
+    private Uri file;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sos);
 
-
         SupportMapFragment mapFragment =
                 (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.frameHeader, EncabezadoFragment.newInstance(getResources().getString(R.string.tituloSos)));
+        ft.commit();
 
-
-        surface = (SurfaceView)findViewById(R.id.surface);
-        SurfaceHolder holder = surface.getHolder();
-        holder.addCallback(this);
-        holder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
-        holder.setFixedSize(400, 300);
-
-        ImageButton btnTomarFoto = (ImageButton)findViewById(R.id.btnTomarFoto);
-        btnTomarFoto.setOnClickListener(new View.OnClickListener() {
+        ImageButton btnAdicionales = (ImageButton)findViewById(R.id.btnAdicionales);
+        btnAdicionales.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                    requestPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_FOTO_PERMISSION);
-                } else {
-                    fotoIntent();
-                }
+                Intent mainIntent = new Intent().setClass(SosActivity.this, AdicionalesActivity.class);
+                startActivity(mainIntent);
             }
         });
+
+
     }
 
-    public void surfaceCreated(SurfaceHolder holder) {
+
+    private void enableStorage() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Permission to access the camera is missing.
+            PermissionUtils.requestPermission(this, STORAGE_PERMISSION_REQUEST_CODE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE, true);
+        }
+        else{
+            enableMyCamera();
+        }
     }
 
-    public void surfaceDestroyed(SurfaceHolder holder) {
+    private void enableMyCamera() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Permission to access the camera is missing.
+            PermissionUtils.requestPermission(this, CAMERA_PERMISSION_REQUEST_CODE,
+                    Manifest.permission.CAMERA, true);
+        }
+        else{
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            file = Uri.fromFile(getOutputMediaFile());
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, file);
+            startActivityForResult(intent, 100);
+        }
     }
 
-    public void surfaceChanged(SurfaceHolder holder,
-                               int format, int width, int height) { }
-/*
-    private String crearFileName(String extension) {
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(LocalDateTime.now());
-        String fileName = extension + "_" + timeStamp + "_";
-        storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-    }
-    */
-    private File crearArchivo(String extension) throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = extension + "_" + timeStamp + "_";
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                "." + extension,         /* suffix */
-                storageDir      /* directory */
-        );
-        return image;
+    @Override
+    public void onMapReady(GoogleMap map) {
+        mMap = map;
+
+        mMap.setOnMyLocationButtonClickListener(this);
+        mMap.setOnMyLocationClickListener(this);
+        enableMyLocation();
     }
 
-    private void fotoIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // Ensure that there's a camera activity to handle the intent
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            // Create the File where the photo should go
-            File photoFile = null;
-            try {
-                photoFile = crearArchivo("JPG");
-            } catch (IOException ex) {
-                // Error occurred while creating the File
-            }
-            // Continue only if the File was successfully created
-            if (photoFile != null) {
-                Uri photoURI = FileProvider.getUriForFile(this,
-                        "ar.com.sight.android.fileprovider",
-                        photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
-            }
+    /**
+     * Enables the My Location layer if the fine location permission has been granted.
+     */
+    private void enableMyLocation() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Permission to access the location is missing.
+            PermissionUtils.requestPermission(this, LOCATION_PERMISSION_REQUEST_CODE,
+                    Manifest.permission.ACCESS_FINE_LOCATION, true);
+        } else if (mMap != null) {
+            // Access to the location has been granted to the app.
+            mMap.setMyLocationEnabled(true);
         }
     }
 
@@ -141,96 +137,55 @@ public class SosActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onMapReady(GoogleMap map) {
-        mMap = map;
-
-        mMap.setOnMyLocationButtonClickListener(this);
-        mMap.setOnMyLocationClickListener(this);
-        enableMyLocation();
-
-    }
-
-    private void enableMyLocation() {
-        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            // Permission to access the location is missing.
-            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
-
-
-        } else if (mMap != null) {
-            // Access to the location has been granted to the app.
-            mMap.setMyLocationEnabled(true);
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        if (requestCode != LOCATION_PERMISSION_REQUEST_CODE) {
+            return;
         }
 
-
-    }
-
-
-/*
-    private void videoIntent() throws IOException {MediaRecorder mediaRecorder = new MediaRecorder();
-
-// Configuramos las fuentes de entrada
-        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        mediaRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
-
-// Seleccionamos el formato de salida
-        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.DEFAULT);
-
-// Seleccionamos el codec de audio y vídeo
-        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.DEFAULT);
-        mediaRecorder.setVideoEncoder(MediaRecorder.VideoEncoder.DEFAULT);
-
-// Especificamos el fichero de salida
-        mediaRecorder.setOutputFile("/mnt/sdcard/mificherodesalida.mp4");
-
-// Nos preparamos para grabar
-        mediaRecorder.prepare();
-
-    }
-
-    private void audioIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // Ensure that there's a camera activity to handle the intent
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            // Create the File where the photo should go
-            File photoFile = null;
-            try {
-                photoFile = crearArchivo("JPG");
-            } catch (IOException ex) {
-                // Error occurred while creating the File
-            }
-            // Continue only if the File was successfully created
-            if (photoFile != null) {
-                Uri photoURI = FileProvider.getUriForFile(this,
-                        "com.example.android.fileprovider",
-                        photoFile);
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                startActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
-            }
-        }
-    }
-    */
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
-            Uri uri = intent.getData();
-            Sight.sendImagenAdicional(getApplicationContext(), uri.toString());
-        }
-        super.onActivityResult(requestCode, resultCode, intent);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            if (requestCode == REQUEST_FOTO_PERMISSION) {
-                fotoIntent();
-            }
+        if (PermissionUtils.isPermissionGranted(permissions, grantResults,
+                Manifest.permission.ACCESS_FINE_LOCATION)) {
+            // Enable the my location layer if the permission has been granted.
+            enableMyLocation();
         } else {
-            Toast.makeText(this, "No se tiene permiso de acceso a la camara", Toast.LENGTH_LONG).show();
+            // Display the missing permission error dialog when the fragments resume.
+            mPermissionDenied = true;
         }
     }
 
+    @Override
+    protected void onResumeFragments() {
+        super.onResumeFragments();
+        if (mPermissionDenied) {
+            // Permission was not granted, display error dialog.
+            showMissingPermissionError();
+            mPermissionDenied = false;
+        }
+    }
+
+    /**
+     * Displays a dialog with error message explaining that the location permission is missing.
+     */
+    private void showMissingPermissionError() {
+        PermissionUtils.PermissionDeniedDialog
+                .newInstance(true).show(getSupportFragmentManager(), "dialog");
+    }
+
+
+
+    private static File getOutputMediaFile(){
+        File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_PICTURES), "CameraDemo");
+
+        if (!mediaStorageDir.exists()){
+            if (!mediaStorageDir.mkdirs()){
+                return null;
+            }
+        }
+
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        return new File(mediaStorageDir.getPath() + File.separator +
+                "IMG_"+ timeStamp + ".jpg");
+    }
 
 }

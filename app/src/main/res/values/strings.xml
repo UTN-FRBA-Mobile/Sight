@@ -3,6 +3,9 @@
 
     <string name="lblEmail">Email</string>
     <string name="lblPassword">Password</string>
+    <string name="lblPasswordConfirmacion">Confirmar Contrasenia</string>
+    <string name="lblPasswordNueva">Contraseña Nueva</string>
+    <string name="lblPasswordActual">Contraseña Actual</string>
 
     <string name="btnIngresar">Ingresar</string>
     <string name="btnGuardar">Guardar</string>
@@ -15,12 +18,21 @@
     <string name="btnBotonBlueTooth">Botón Bluetooth</string>
     <string name="btnCamara">Adjuntar Foto</string>
     <string name="btnLogout">Desloguearme</string>
+    <string name="btnCambiarContraseia">Guardar</string>
+    <string name="btnMisNotificaciones">Mis Notificaciones</string>
 
     <string name="tituloMiFichaMedica">Mi Ficha Médica</string>
-    <string name="tituloMisVecinos">Mis Vecinos de Confianza</string>
+    <string name="tituloMisVecinos">Mis Vecinos</string>
     <string name="tituloMiContrasenia">Mi Contraseña</string>
     <string name="tituloMisDenuncias">Mis Denuncias</string>
     <string name="tituloConfiguracion">Configuración</string>
+    <string name="tituloMisNotificaciones">Mis Notificaciones</string>
+    <string name="tituloPerfil">Mi Perfil</string>
+    <string name="tituloBlueTooth">Botón Bluetooth</string>
+    <string name="tituloCambiarContrasenia">Cambiar Contraseña</string>
+    <string name="tituloCalificacion">Calificar Acción Policial</string>
+    <string name="tituloEvento">Evento</string>
+    <string name="tituloSos">SOS</string>
 
     <string name="success_ficha_medica">Ficha Médica Guardada</string>
     <string name="success_contrasenia_cambiada">La contraseña se ha modificado correctamente</string>
@@ -33,18 +45,20 @@
     <string name="error_ficha_medica_requerida">Ficha Médica requerida</string>
 
     <string name="error_conexion">Error: Compruebe que tiene conexión a internet</string>
-    <string name="tituloPerfil">Mi Perfil</string>
-    <string name="tituloBlueTooth">Botón Bluetooth</string>
-    <string name="tituloCambiarContrasenia">Cambiar Contraseña</string>
-    <string name="tituloSos">SOS</string>
+
+
     <string name="btnCambiarcontraseia">Guardar</string>
-    <string name="lblPasswordConfirmacion">Confirmar Contraseña</string>
-    <string name="lblPasswordNueva">Contraseña Nueva</string>
-    <string name="lblPasswordActual">Contraseña Actual</string>
+
 
     <!--    Permissions    -->
     <string name="permission_rationale_location">Access to the location service is required to demonstrate the \'my location\' feature, which shows your current location on the map.</string>
     <string name="location_permission_denied">This sample requires location permission to enable the \'my location\' layer. Please try again and grant access to use the location.\nIf the permission has been permanently denied, it can be enabled from the System Settings &gt; Apps &gt; \'Google Maps API Demos\'.</string>
     <string name="permission_required_toast">Location permission is required for this demo.</string>
+
+
+    <string name="error_permiso_camara">No se tiene permiso de acceso a la camara</string>
+    <string name="error_permiso_ubicacion">No se tiene permiso de acceso a la ubicación</string>
+    <string name="error_permiso_escritura_externa">No se tiene permiso de escritura</string>
+
 
 </resources>

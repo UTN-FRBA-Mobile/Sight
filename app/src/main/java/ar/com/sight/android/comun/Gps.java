@@ -7,6 +7,9 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+
 import ar.com.sight.android.Sight;
 
 import static android.content.Context.LOCATION_SERVICE;
@@ -71,11 +74,16 @@ public class Gps implements LocationListener {
         }
     }
 
+    static LocalDateTime ultimoCambioLocacion = LocalDateTime.now();
+
     @Override
     public void onLocationChanged(Location location) {
-        if (thiscontext != null && Sight.getEventoReciente(thiscontext)) {
-            this.location = location;
-            Sight.sendEvento(thiscontext);
+        if (LocalDateTime.now().until(ultimoCambioLocacion, ChronoUnit.MINUTES) > 1) {
+            ultimoCambioLocacion = LocalDateTime.now();
+            if (thiscontext != null && Sight.getEventoReciente(thiscontext)) {
+                this.location = location;
+                Sight.sendEvento(thiscontext);
+            }
         }
     }
 

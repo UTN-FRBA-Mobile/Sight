@@ -10,6 +10,7 @@ public class Evento {
     private double latitud;
     private double longitud;
     private String direccion;
+    private String vecino;
 
 
     public int getId() {
@@ -82,5 +83,17 @@ public class Evento {
 
     public void setDireccion(String direccion) {
         this.direccion = direccion;
+    }
+
+    public String getVecino() {
+        return vecino;
+    }
+
+    public void setVecino(String vecino) {
+        this.vecino = vecino;
+    }
+
+    public String getDescripcion() {
+        return getEvento_tipo_decripcion() + ": " + getDireccion();
     }
 }

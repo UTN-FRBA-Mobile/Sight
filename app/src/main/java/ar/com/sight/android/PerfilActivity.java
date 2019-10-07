@@ -11,6 +11,7 @@ import android.widget.Button;
 import ar.com.sight.android.comun.EncabezadoFragment;
 import ar.com.sight.android.perfil.FichaMedicaActivity;
 import ar.com.sight.android.perfil.MisDenunciasActivity;
+import ar.com.sight.android.perfil.MisNotificacionesActivity;
 import ar.com.sight.android.perfil.MisVecinosActivity;
 
 public class PerfilActivity extends AppCompatActivity {
@@ -47,6 +48,16 @@ public class PerfilActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent mainIntent = new Intent().setClass(PerfilActivity.this, MisDenunciasActivity.class);
+                startActivity(mainIntent);
+            }
+        });
+
+
+        Button btnMisNotificaciones = (Button) findViewById(R.id.btnMisNotificaciones);
+        btnMisNotificaciones.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent mainIntent = new Intent().setClass(PerfilActivity.this, MisNotificacionesActivity.class);
                 startActivity(mainIntent);
             }
         });

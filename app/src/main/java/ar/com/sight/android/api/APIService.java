@@ -7,6 +7,7 @@ import ar.com.sight.android.api.modelos.Usuario;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -60,13 +61,28 @@ public interface APIService {
     @GET("eventos/mis_denuncias")
     Call<ArrayList<Evento>> getMisDenuncias(@Header("Authorization") String token);
 
+    @GET("eventos/mis_notificaciones")
+    Call<ArrayList<Evento>> getMisNotificaciones(@Header("Authorization") String token);
+
     @GET("eventos/get")
     Call<Evento> getEvento(@Header("Authorization") String token, @Query("evento_id") Integer evento_id);
 
     @Multipart
-    @POST("eventos/adicional")
-    Call<String> setArchivoAdicional(@Header("Authorization") String token, @Part MultipartBody.Part file, @Part("name") RequestBody requestBody);
+    @POST("eventos/adicional_archivo")
+    Call<String> setArchivoAdicional(@Header("Authorization") String token
+            //, @Header("content-type") String hContentType1
+            //, @Header("Content-Type") String hContentType2, @Header("Accept-Encoding") String hAcceptEncoding
+            //, @Header("Accept") String hAccept, @Header("Cache-Control") String hCache
+            //, @Header("Connection") String hConnection
+            , @Part("description") RequestBody description
+            , @Part MultipartBody.Part file);
 
-    @POST("eventos/adicional")
+    @POST("eventos/adicional_mensaje")
+    @FormUrlEncoded
     Call<String> setMensajeAdicional(@Header("Authorization") String token, @Field("mensaje") String mensaje);
+
+    @POST("eventos/calificar")
+    @FormUrlEncoded
+    Call<String> setCalificar(@Header("Authorization") String token, @Field("evento_id") Integer evento_id
+            , @Field("puntuacion") Integer puntuacion, @Field("mensaje") String mensaje);
 }

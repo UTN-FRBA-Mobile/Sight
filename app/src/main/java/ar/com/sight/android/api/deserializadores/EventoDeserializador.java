@@ -41,6 +41,10 @@ public class EventoDeserializador implements JsonDeserializer<Evento> {
             evento.setDireccion(jsonObject.get("direccion").getAsString());
         }
 
+        if (jsonObject.get("vecino") != null && !jsonObject.get("vecino").isJsonNull()) {
+            evento.setVecino(jsonObject.get("vecino").getAsString());
+        }
+
         if (jsonObject.get("evento_estado") != null && !jsonObject.get("evento_estado").isJsonNull()) {
             evento.setEvento_estado_decripcion(jsonObject.get("evento_estado").getAsString());
         }
