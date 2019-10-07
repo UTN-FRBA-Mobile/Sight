@@ -17,6 +17,7 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 
 import ar.com.sight.android.api.APIAdapter;
+import ar.com.sight.android.api.BackoffCallback;
 import ar.com.sight.android.api.deserializadores.StringDeserializador;
 import ar.com.sight.android.api.deserializadores.UsuarioDeserializador;
 import ar.com.sight.android.api.modelos.Usuario;
@@ -153,6 +154,11 @@ public class Sight {
 
             APIAdapter.crearConexion().setNuevoEvento(getToken(context),
                     tipo_evento, gps.getLatitude(), gps.getLongitude()).enqueue(new Callback<Void>() {
+
+                private static final int RETRY_COUNT = 3;
+                private static final double RETRY_DELAY = 300;
+                private int retryCount = 0;
+
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     Toast mensaje = Toast.makeText(context, "Evento Enviado: La ayuda va en camino", Toast.LENGTH_SHORT);
@@ -163,6 +169,27 @@ public class Sight {
                 public void onFailure(Call<Void> call, Throwable t) {
                     Toast mensaje = Toast.makeText(context, "ERROR: Intente nuevamente", Toast.LENGTH_SHORT);
                     mensaje.show();
+                    // USAR BACK OFF CALLBACK
+                    // retryCount++;
+                    // if (retryCount <= RETRY_COUNT) {
+                    //  int expDelay = (int) (RETRY_DELAY * Math.pow(2, Math.max(0, retryCount - 1)));
+                    //    new Handler().postDelayed(new Runnable() {
+                    //     @Override
+                    //     public void run() {
+                    //      retry(call);
+                    //    }
+                    //    }, expDelay);
+                    //  } else {
+                    //      onFailedAfterRetry(t);
+                    // }
+                    //  }
+
+                    //  private void retry(Call<T> call) {
+                    //     call.clone().enqueue(this);
+                    //  }
+
+                    //  public abstract void onFailedAfterRetry(Throwable t);
+
                 }
             });
         }

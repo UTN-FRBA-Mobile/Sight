@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/degrade"
-    tools:context=".PerfilActivity">
+    tools:context=".SosActivity">
 
     <FrameLayout
         android:id="@+id/frameHeader"
@@ -15,19 +15,21 @@
     </FrameLayout>
 
     <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/layout">
+        android:id="@+id/layoutMapa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5">
 
         <fragment
             android:id="@+id/map"
             class="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="300dp"
             android:layout_height="400dp"
-            android:layout_marginLeft="50dp"
-            android:layout_marginTop="200dp" />
+            android:layout_marginTop="100dp"
+            tools:context="com.example.mapwithmarker.MapsMarkerActivity" />
     </FrameLayout>
-
 
     <ImageButton
         android:id="@+id/btnAdicionales"
