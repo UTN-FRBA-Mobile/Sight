@@ -1,13 +1,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="90dp"
+    android:layout_height="90dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-            <ImageButton
-                android:contentDescription="SOS BUTTON"
-                android:id="@+id/widget_btnSos"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_centerInParent="true"
-                app:srcCompat="@drawable/widget_iconopanico"
-                />
+
+    <ImageButton
+        android:id="@+id/widget_btnSos"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
+        android:layout_centerInParent="true"
+        android:contentDescription="SOS BUTTON"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/widget_iconopanico" />
 </RelativeLayout>
