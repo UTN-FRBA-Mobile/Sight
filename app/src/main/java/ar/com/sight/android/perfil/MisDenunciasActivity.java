@@ -69,6 +69,8 @@ public class MisDenunciasActivity extends AppCompatActivity {
         intent.putExtra("evento_estado", e.getEvento_estado_decripcion());
         intent.putExtra("calificacion", true);
         intent.putExtra("evento_descripcion", e.getDescripcion());
+        intent.putExtra("evento_fecha", e.getTimestamp());
+        intent.putExtra("vecino", e.getVecino());
         startActivity(intent);
     }
 

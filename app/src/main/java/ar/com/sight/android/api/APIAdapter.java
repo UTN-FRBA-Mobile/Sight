@@ -8,7 +8,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class APIAdapter {
-    public static final String ROOT_URL = "http://alarmas.ctmelectronica.com.ar/utn/api/";
+    public static final String ROOT_URL = "http://utn.ctmelectronica.com.ar/utn/api/";
 
     public static APIService crearConexion(Gson gson)
     {

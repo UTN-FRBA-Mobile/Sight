@@ -23,6 +23,7 @@ import ar.com.sight.android.api.APIAdapter;
 import ar.com.sight.android.api.deserializadores.EventosDeserializador;
 import ar.com.sight.android.api.modelos.Evento;
 import ar.com.sight.android.comun.EncabezadoFragment;
+import ar.com.sight.android.comun.EventoActivity;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -51,58 +52,16 @@ public class MisNotificacionesActivity extends AppCompatActivity {
     }
 
     private void showEvento(final Evento e) {
-        //instantiate the popup.xml layout file
-/*
-        ConstraintLayout linearLayout1 = findViewById(R.id.denunciasLayout);
-        LayoutInflater layoutInflater = (LayoutInflater) DenunciasActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View customView = layoutInflater.inflate(R.layout.activity_evento,null);
-
-        FloatingActionButton closePopupBtn = customView.findViewById(R.id.closePopupBtn);
-
-        ((TextView)customView.findViewById(R.id.lblEventoEstado)).setText(e.getEvento_estado_decripcion());
-        ((TextView)customView.findViewById(R.id.lblEventoFecha)).setText(e.getTimestamp());
-        ((TextView)customView.findViewById(R.id.lblEventoTipo)).setText(e.getEvento_tipo_decripcion());
-
-        ((MapView)customView.findViewById(R.id.mapView)).getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(GoogleMap googleMap) {
-                // Pan the camera to your home address (in this case, Google HQ).
-                LatLng home = new LatLng(e.getLatitud(), e.getLongitud());
-                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(home, INITIAL_ZOOM));
-
-                // Add a ground overlay 100 meters in width to the home location.
-                GroundOverlayOptions homeOverlay = new GroundOverlayOptions()
-                        .image(BitmapDescriptorFactory.fromResource(android.R.drawable.ic_menu_mylocation))
-                        .position(home, 100);
-
-                googleMap.addGroundOverlay(homeOverlay);
-
-                //setMapLongClick(googleMap); // Set a long click listener for the map;
-                //setPoiClick(googleMap); // Set a click listener for points of interest.
-                //setMapStyle(googleMap); // Set the custom map style.
-                //enableMyLocation(googleMap); // Enable location tracking.
-                // Enable going into StreetView by clicking on an InfoWindow from a
-                // point of interest.
-                //setInfoWindowClickToPanorama(googleMap);
-
-            }
-        });
-
-        //instantiate popup window
-        final PopupWindow popupWindow = new PopupWindow(customView, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-
-        //display the popup window
-        popupWindow.showAtLocation(linearLayout1, Gravity.CENTER, 0, 0);
-
-        //close the popup window on button click
-        closePopupBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                popupWindow.dismiss();
-            }
-        });
-
- */
+        Intent intent = new Intent().setClass(MisNotificacionesActivity.this, EventoActivity.class);
+        intent.putExtra("evento_id", e.getId());
+        intent.putExtra("latitud", e.getLatitud());
+        intent.putExtra("longitud", e.getLongitud());
+        intent.putExtra("evento_estado", e.getEvento_estado_decripcion());
+        intent.putExtra("calificacion", false);
+        intent.putExtra("evento_descripcion", e.getDescripcion());
+        intent.putExtra("evento_fecha", e.getTimestamp());
+        intent.putExtra("vecino", e.getVecino());
+        startActivity(intent);
     }
 
     private void getNotificaciones() {

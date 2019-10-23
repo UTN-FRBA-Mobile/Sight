@@ -44,6 +44,8 @@ public class EventoActivity extends AppCompatActivity implements OnMapReadyCallb
 
         ((TextView)findViewById(R.id.lblEventoDescripcion)).setText(getIntent().getStringExtra("evento_descripcion"));
         ((TextView)findViewById(R.id.lblEventoEstado)).setText(getIntent().getStringExtra("evento_estado"));
+        ((TextView)findViewById(R.id.lblEventoVecino)).setText(getIntent().getStringExtra("vecino"));
+        ((TextView)findViewById(R.id.lblEventoFecha)).setText(getIntent().getStringExtra("evento_fecha"));
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.frameHeader, EncabezadoFragment.newInstance(getResources().getString(R.string.tituloEvento)));
@@ -58,27 +60,26 @@ public class EventoActivity extends AppCompatActivity implements OnMapReadyCallb
         btnEnviarCalificacion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final String[] mensajebd = {""};
                 try {
                     APIAdapter.crearConexion(String.class, new StringDeserializador()).setCalificar(
                             Sight.getToken(getApplication()), evento_id, (int)ratingBar.getRating(),
                             txtCalificacion.getText().toString()).enqueue(new Callback<String>() {
                         @Override
                         public void onResponse(Call<String> call, Response<String> response) {
-                            mensajebd[0] = response.body();
+                            Toast msg = Toast.makeText(getApplication(), response.body(), Toast.LENGTH_SHORT);
+                            msg.show();
                         }
 
                         @Override
                         public void onFailure(Call<String> call, Throwable t) {
-                            mensajebd[0] = t.getMessage();
+                            Toast msg = Toast.makeText(getApplication(), t.getMessage(), Toast.LENGTH_SHORT);
+                            msg.show();
                         }
                     });
                 } catch (Exception ex) {
-                    mensajebd[0] = ex.getMessage();
+                    Toast msg = Toast.makeText(getApplication(), ex.getMessage(), Toast.LENGTH_SHORT);
+                    msg.show();
                 }
-
-                Toast msg = Toast.makeText(getApplication(), mensajebd[0], Toast.LENGTH_SHORT);
-                msg.show();
             }
         });
 

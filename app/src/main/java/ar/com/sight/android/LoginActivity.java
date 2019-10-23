@@ -71,7 +71,7 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(Call<String> call, Throwable t) {
                     Sight.borrarDatos(getApplication());
-                    Toast mensaje = Toast.makeText(getApplicationContext(), R.string.error_password_incorrecto, Toast.LENGTH_SHORT);
+                    Toast mensaje = Toast.makeText(getApplicationContext(), R.string.error_conexion, Toast.LENGTH_SHORT);
                     mensaje.show();
                 }
             });

@@ -22,7 +22,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintTop_toBottomOf="@id/lblEventoDescripcion">
+        app:layout_constraintTop_toBottomOf="@id/lblEventoFecha">
 
         <fragment
             android:id="@+id/mapa"
@@ -41,6 +41,26 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintTop_toBottomOf="@id/frameHeader"/>
+
+    <TextView
+        android:id="@+id/lblEventoVecino"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margen_full_with"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintTop_toBottomOf="@id/lblEventoDescripcion"/>
+
+    <TextView
+        android:id="@+id/lblEventoFecha"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margen_full_with"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintTop_toBottomOf="@id/lblEventoVecino"/>
 
     <TextView
         android:id="@+id/lblEventoEstado"
@@ -97,7 +117,7 @@
             app:layout_constraintStart_toEndOf="@+id/txtCalificacion"
             app:layout_constraintTop_toBottomOf="@id/ratingBar"
             android:background="@drawable/boton_sin_borde"
-            app:srcCompat="@android:drawable/ic_menu_send"/>
+            app:srcCompat="@android:drawable/ic_menu_send" />
 
         <RatingBar
             android:id="@+id/ratingBar"

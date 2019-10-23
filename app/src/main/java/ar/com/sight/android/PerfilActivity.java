@@ -52,7 +52,6 @@ public class PerfilActivity extends AppCompatActivity {
             }
         });
 
-
         Button btnMisNotificaciones = (Button) findViewById(R.id.btnMisNotificaciones);
         btnMisNotificaciones.setOnClickListener(new View.OnClickListener() {
             @Override

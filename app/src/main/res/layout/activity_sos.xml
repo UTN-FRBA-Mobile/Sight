@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/degrade"
-    tools:context=".SosActivity">
+    tools:context=".PerfilActivity">
 
     <FrameLayout
         android:id="@+id/frameHeader"
@@ -14,33 +14,38 @@
         app:layout_constraintTop_toTopOf="parent" >
     </FrameLayout>
 
+    <Button
+        android:id="@+id/btnCancelar"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_margin="@dimen/margen_full_with"
+        android:gravity="center_vertical"
+        android:text="Enviar evento en 5 segundos"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/frameHeader" />
+
     <FrameLayout
-        android:id="@+id/layoutMapa"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:id="@+id/layout"
+        android:layout_marginBottom="@dimen/menuprincipal_boton_margen"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5">
+        app:layout_constraintEnd_toEndOf="parent">
 
         <fragment
             android:id="@+id/map"
             class="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="300dp"
-            android:layout_height="400dp"
-            android:layout_marginTop="100dp"
-            tools:context="com.example.mapwithmarker.MapsMarkerActivity" />
+            android:layout_height="300dp" />
+
     </FrameLayout>
 
-    <ImageButton
-        android:id="@+id/btnAdicionales"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_column="1"
-        android:background="@drawable/menu_principal_row"
-        android:padding="5dp"
-        app:srcCompat="@drawable/menuprincipal_iconoayudavecino" />
-
-
-
+    <SurfaceView
+        android:id="@+id/surfaceView"
+        android:layout_width="1px"
+        android:layout_height="1px" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

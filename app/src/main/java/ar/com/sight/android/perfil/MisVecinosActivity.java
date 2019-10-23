@@ -15,6 +15,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -145,7 +146,7 @@ public class MisVecinosActivity extends AppCompatActivity {
             t2v.setGravity(Gravity.CENTER);
             tbrow.addView(t2v);
 
-            ImageButton t3v = new ImageButton(thisContext);
+            ImageView t3v = new ImageView(thisContext);
             t3v.setImageDrawable(res.getDrawable(R.drawable.boton_borrar));
             t3v.setBackgroundColor(Color.TRANSPARENT);
             ConstraintSet set = new ConstraintSet();

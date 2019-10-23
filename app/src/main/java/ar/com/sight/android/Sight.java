@@ -1,5 +1,6 @@
 package ar.com.sight.android;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.location.Location;
@@ -15,9 +16,9 @@ import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.util.List;
 
 import ar.com.sight.android.api.APIAdapter;
-import ar.com.sight.android.api.BackoffCallback;
 import ar.com.sight.android.api.deserializadores.StringDeserializador;
 import ar.com.sight.android.api.deserializadores.UsuarioDeserializador;
 import ar.com.sight.android.api.modelos.Usuario;
@@ -39,7 +40,9 @@ public class Sight {
 
     static Usuario usuario = null;
     static String token = null;
+    static String bluetooth = null;
     static LocalDateTime timestamp_ultimo_evento;
+    static Gps gps;
 
     public static String getToken(Context context) {
         if (token == null) {
@@ -54,6 +57,20 @@ public class Sight {
         editor.putString("Token", Sight.token);
         editor.apply();
         getMisDatos(context);
+    }
+
+    public static void setBluetooth(Context context, String bluethoot) {
+        SharedPreferences.Editor editor = context.getSharedPreferences("Sight", MODE_PRIVATE).edit();
+        editor.putString("Bluetooth", bluethoot);
+        Sight.bluetooth = bluethoot;
+        editor.apply();
+    }
+
+    public static String getBluetooth(Context context) {
+        if (bluetooth == null) {
+            bluetooth = context.getSharedPreferences("Sight", MODE_PRIVATE).getString("Bluetooth", "");
+        }
+        return bluetooth;
     }
 
     public static Usuario getMisDatos(final Context context) {
@@ -113,9 +130,23 @@ public class Sight {
         editor.putString("Apellido", "");
         editor.putString("Token", "");
         editor.putString("ID", "");
+        editor.putString("Bluetooth", "");
         editor.apply();
         token = "";
+        bluetooth = null;
         usuario = null;
+    }
+
+    public static boolean isServiceRunning(Context context){
+        final ActivityManager activityManager = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
+        final List<ActivityManager.RunningServiceInfo> services = activityManager.getRunningServices(Integer.MAX_VALUE);
+
+        for (ActivityManager.RunningServiceInfo runningServiceInfo : services) {
+            if (runningServiceInfo.service.getClassName().equals("ar.com.sight.android.ServicioBackground")){
+                return true;
+            }
+        }
+        return false;
     }
 
     public static void startFirebase(Context context) {
@@ -142,23 +173,15 @@ public class Sight {
         editor.apply();
     }
 
-    public static void sendEvento(Context context){
+    public static void sendEvento(final Context context){
         sendEvento(context, getTipoEventoReciente(context));
     }
 
     public static void sendEvento(final Context context, Integer tipo_evento){
         try {
 
-            Gps gps = Gps.newInstance();
-            gps.getLocacion(context);
-
             APIAdapter.crearConexion().setNuevoEvento(getToken(context),
-                    tipo_evento, gps.getLatitude(), gps.getLongitude()).enqueue(new Callback<Void>() {
-
-                private static final int RETRY_COUNT = 3;
-                private static final double RETRY_DELAY = 300;
-                private int retryCount = 0;
-
+                    tipo_evento, Gps.getLatitude(), Gps.getLongitude()).enqueue(new Callback<Void>() {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
                     Toast mensaje = Toast.makeText(context, "Evento Enviado: La ayuda va en camino", Toast.LENGTH_SHORT);
@@ -169,27 +192,33 @@ public class Sight {
                 public void onFailure(Call<Void> call, Throwable t) {
                     Toast mensaje = Toast.makeText(context, "ERROR: Intente nuevamente", Toast.LENGTH_SHORT);
                     mensaje.show();
-                    // USAR BACK OFF CALLBACK
-                    // retryCount++;
-                    // if (retryCount <= RETRY_COUNT) {
-                    //  int expDelay = (int) (RETRY_DELAY * Math.pow(2, Math.max(0, retryCount - 1)));
-                    //    new Handler().postDelayed(new Runnable() {
-                    //     @Override
-                    //     public void run() {
-                    //      retry(call);
-                    //    }
-                    //    }, expDelay);
-                    //  } else {
-                    //      onFailedAfterRetry(t);
-                    // }
-                    //  }
+                }
+            });
+        }
+        catch (Exception ex) {
+            Toast mensaje = Toast.makeText(context, ex.getMessage(), Toast.LENGTH_SHORT);
+            mensaje.show();
+        }
 
-                    //  private void retry(Call<T> call) {
-                    //     call.clone().enqueue(this);
-                    //  }
+        setEventoReciente(context, tipo_evento);
+    }
 
-                    //  public abstract void onFailedAfterRetry(Throwable t);
 
+    public static void sendEvento2(final Context context, Integer tipo_evento){
+        try {
+
+            APIAdapter.crearConexion().setNuevoEvento(getToken(context),
+                    tipo_evento, Gps.getLatitude(), Gps.getLongitude()).enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    Toast mensaje = Toast.makeText(context, "Evento Enviado: La ayuda va en camino", Toast.LENGTH_SHORT);
+                    mensaje.show();
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    Toast mensaje = Toast.makeText(context, "ERROR: Intente nuevamente", Toast.LENGTH_SHORT);
+                    mensaje.show();
                 }
             });
         }
@@ -208,7 +237,7 @@ public class Sight {
 
             RequestBody requestFile =
                     RequestBody.create(
-                            MediaType.parse("image/*"),
+                            MediaType.parse("image/jpeg"),
                             file
                     );
 
@@ -247,28 +276,73 @@ public class Sight {
         }
     }
 
-    public static void sendMesnajeAdicional(Context context, String mensaje){
-        final String[] mensajebd = {""};
-
+    public static void sendVideoAdicional(final Context context, String filePath) {
         try {
-            APIAdapter.crearConexion(String.class, new StringDeserializador()).setMensajeAdicional(getToken(context), mensaje).enqueue(new Callback<String>() {
+            //Create a file object using file path
+            File file = new File(filePath);
+
+            RequestBody requestFile =
+                    RequestBody.create(
+                            MediaType.parse("video/*"),
+                            file
+                    );
+
+            // MultipartBody.Part is used to send also the actual file name
+            MultipartBody.Part body =
+                    MultipartBody.Part.createFormData("pepe", file.getName(), requestFile);
+
+            // add another part within the multipart request
+            String descriptionString = "hello, this is description speaking";
+            RequestBody description =
+                    RequestBody.create(
+                            okhttp3.MultipartBody.FORM, descriptionString);
+            
+
+            Call call = APIAdapter.crearConexion(String.class, new StringDeserializador()).setArchivoAdicional(getToken(context),
+                    //"multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW",
+                    //"application/x-www-form-urlencoded","gzip, deflate",
+                    //"*/*", "no-cache", "keep-alive",
+                    description, body);
+            call.enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
-                    mensajebd[0] = response.body();
+                    Toast mensaje = Toast.makeText(context, response.body(), Toast.LENGTH_SHORT);
+                    mensaje.show();
+                }
+                @Override
+                public void onFailure(Call<String> call, Throwable t) {
+                    Toast mensaje = Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT);
+                    mensaje.show();
+                }
+
+            });
+        }
+        catch (Exception ex) {
+            Toast mensaje = Toast.makeText(context, ex.getMessage(), Toast.LENGTH_SHORT);
+            mensaje.show();
+        }
+    }
+
+    public static void sendMesnajeAdicional(final Context context, String msg){
+        try {
+            APIAdapter.crearConexion(String.class, new StringDeserializador()).setMensajeAdicional(getToken(context), msg).enqueue(new Callback<String>() {
+                @Override
+                public void onResponse(Call<String> call, Response<String> response) {
+                    Toast mensaje = Toast.makeText(context, response.body(), Toast.LENGTH_SHORT);
+                    mensaje.show();
                 }
 
                 @Override
                 public void onFailure(Call<String> call, Throwable t) {
-                    mensajebd[0] = t.getMessage();
+                    Toast mensaje = Toast.makeText(context, t.getMessage(), Toast.LENGTH_SHORT);
+                    mensaje.show();
                 }
             });
         }
         catch (Exception ex)
         {
-            mensajebd[0] = ex.getMessage();
+            Toast mensaje = Toast.makeText(context, ex.getMessage(), Toast.LENGTH_SHORT);
+            mensaje.show();
         }
-
-        Toast msg = Toast.makeText(context, mensajebd[0], Toast.LENGTH_SHORT);
-        msg.show();
     }
 }
