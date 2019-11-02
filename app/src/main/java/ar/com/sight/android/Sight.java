@@ -203,33 +203,6 @@ public class Sight {
         setEventoReciente(context, tipo_evento);
     }
 
-
-    public static void sendEvento2(final Context context, Integer tipo_evento){
-        try {
-
-            APIAdapter.crearConexion().setNuevoEvento(getToken(context),
-                    tipo_evento, Gps.getLatitude(), Gps.getLongitude()).enqueue(new Callback<Void>() {
-                @Override
-                public void onResponse(Call<Void> call, Response<Void> response) {
-                    Toast mensaje = Toast.makeText(context, "Evento Enviado: La ayuda va en camino", Toast.LENGTH_SHORT);
-                    mensaje.show();
-                }
-
-                @Override
-                public void onFailure(Call<Void> call, Throwable t) {
-                    Toast mensaje = Toast.makeText(context, "ERROR: Intente nuevamente", Toast.LENGTH_SHORT);
-                    mensaje.show();
-                }
-            });
-        }
-        catch (Exception ex) {
-            Toast mensaje = Toast.makeText(context, ex.getMessage(), Toast.LENGTH_SHORT);
-            mensaje.show();
-        }
-
-        setEventoReciente(context, tipo_evento);
-    }
-
     public static void sendImagenAdicional(final Context context, String filePath) {
         try {
             //Create a file object using file path

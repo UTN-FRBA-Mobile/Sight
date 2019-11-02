@@ -63,9 +63,16 @@ public class LoginActivity extends AppCompatActivity {
             APIAdapter.crearConexion(String.class, new TokenDeserializador()).getAccessToken(usuarioIngresado, passwordIngresado, "password").enqueue(new Callback<String>() {
                 @Override
                 public void onResponse(Call<String> call, Response<String> response) {
-                    Sight.setToken(getApplication(), response.body());
-                    Intent mainIntent = new Intent().setClass(LoginActivity.this, MenuPrincipalActivity.class);
-                    startActivity(mainIntent);
+                    if (response.code() == 200) {
+                        Sight.setToken(getApplication(), response.body());
+                        Intent mainIntent = new Intent().setClass(LoginActivity.this, MenuPrincipalActivity.class);
+                        startActivity(mainIntent);
+                    }
+                    else {
+                        Sight.borrarDatos(getApplication());
+                        Toast mensaje = Toast.makeText(getApplicationContext(), R.string.error_conexion, Toast.LENGTH_SHORT);
+                        mensaje.show();
+                    }
                 }
 
                 @Override

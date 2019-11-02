@@ -16,7 +16,6 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
-import ar.com.sight.android.comun.Gps;
 import ar.com.sight.android.recibidores.RecibeBluetooth;
 
 public class ServicioBackground  extends Service {
@@ -42,6 +41,7 @@ public class ServicioBackground  extends Service {
                 .setSmallIcon(R.drawable.ic_notification)
                 .setColor(getColor(R.color.colorNotificacion))
                 .setContentIntent(pendingIntent)
+                .setSound(null)
                 .build();
 
         startForeground(1, notification);
@@ -69,6 +69,7 @@ public class ServicioBackground  extends Service {
         // Create an IntentFilter instance.
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
+        intentFilter.addAction(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED);
         intentFilter.setPriority(IntentFilter.SYSTEM_HIGH_PRIORITY);
 
         BluetoothAdapter.getDefaultAdapter().disable();

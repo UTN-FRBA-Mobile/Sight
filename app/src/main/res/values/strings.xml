@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">Sight</string>
 
-    <string name="lblEmail">Email</string>
-    <string name="lblPassword">Password</string>
+    <string name="lblEmail">Correo</string>
+    <string name="lblPassword">Contraseña</string>
     <string name="lblPasswordConfirmacion">Confirmar Contraseña</string>
     <string name="lblPasswordNueva">Contraseña Nueva</string>
     <string name="lblPasswordActual">Contraseña Actual</string>
@@ -21,6 +21,9 @@
     <string name="btnLogout">Desloguearme</string>
     <string name="btnCambiarContraseia">Guardar</string>
     <string name="btnBorrarBluetooth">Desasociar Botón Bluetooth</string>
+    <string name="btnFilmar">Filmar</string>
+    <string name="btnSacarFoto">Sacar foto</string>
+    <string name="btnEnviarMensajeAdicional">Enviar Mensaje</string>
 
     <string name="tituloMiFichaMedica">Mi Ficha Médica</string>
     <string name="tituloMisVecinos">Mis Vecinos</string>
@@ -34,13 +37,15 @@
     <string name="tituloCalificacion">Calificar Acción Policial</string>
     <string name="tituloEvento">Evento</string>
     <string name="tituloSos">SOS</string>
+    <string name="tituloAdicionales">Información Adicional</string>
 
     <string name="success_ficha_medica">Ficha Médica Guardada</string>
     <string name="success_contrasenia_cambiada">La contraseña se ha modificado correctamente</string>
+    <string name="success_mensaje_adicional_enviado">El mensaje ha sido enviado</string>
 
-    <string name="error_usuario_requerido">Debe ingresar el email</string>
+    <string name="error_usuario_requerido">Debe ingresar el correo</string>
     <string name="error_password_requerido">Debe ingresar la contraseña</string>
-    <string name="error_password_incorrecto">El email y/o contraseña son incorrectos</string>
+    <string name="error_password_incorrecto">El correo y/o contraseña son incorrectos</string>
 
     <string name="error_ficha_medica_no_existente">El usuario no posee ficha médica</string>
     <string name="error_ficha_medica_requerida">Ficha Médica requerida</string>
@@ -53,13 +58,14 @@
     <string name="error_permiso_escritura_externa">No se tiene permiso de escritura</string>
     <string name="error_permiso_bluetooth">No se tiene permiso de bluetooth</string>
     <string name="error_permiso_video">No tiene permiso para grabar video</string>
-    <string name="btnEnviarMensajeAdicional">Enviar Mensaje</string>
+    <string name="error_mensaje_adicional_vacio">El mensaje no puede ser vacio</string>
 
     <string name="tiempo_gps_milisec">10000</string>
     <string name="distancia_gps_metros">30</string>
-    <string name="tituloAdicionales">Información Adicional</string>
-    <string name="success_mensaje_adicional_enviado">El mensaje ha sido enviado</string>
-    <string name="error_mensaje_adicional_vacio">El mensaje no puede ser vacio</string>
-    <string name="btnSacarFoto">Sacar foto</string>
+
+    <string name="mis_denuncias_vacio">No realizó ninguna denuncia</string>
+    <string name="mis_notificaciones_vacio">No recibió ninguna notificación</string>
+    <string name="mis_vecinos_confirmacion_borrado">¿Está seguro que desea eliminar al vecino %s de la lista de confianza?</string>
+    <string name="mi_ficha_medica_confirmacion_guardado">¿Está seguro que desea actualizar la ficha médica?</string>
 
 </resources>

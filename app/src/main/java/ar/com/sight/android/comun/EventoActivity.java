@@ -34,6 +34,9 @@ public class EventoActivity extends AppCompatActivity implements OnMapReadyCallb
     RatingBar ratingBar;
     TextView txtCalificacion;
 
+    double latitud = 0;
+    double longitud = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,16 +45,39 @@ public class EventoActivity extends AppCompatActivity implements OnMapReadyCallb
         evento_id = getIntent().getIntExtra("evento_id", -1);
         boolean verCalificacion = getIntent().getBooleanExtra("calificacion", false);
 
-        ((TextView)findViewById(R.id.lblEventoDescripcion)).setText(getIntent().getStringExtra("evento_descripcion"));
+        String descripcion = getIntent().getStringExtra("evento_descripcion");
+
+        if (descripcion == null){
+            descripcion = getIntent().getStringExtra("evento_tipo") +": " + getIntent().getStringExtra("direccion");
+        }
+
+        String fecha = getIntent().getStringExtra("evento_fecha");
+
+        if (fecha == null) {
+            fecha = getIntent().getStringExtra("timestamp");
+        }
+
+        ((TextView)findViewById(R.id.lblEventoDescripcion)).setText(descripcion);
         ((TextView)findViewById(R.id.lblEventoEstado)).setText(getIntent().getStringExtra("evento_estado"));
         ((TextView)findViewById(R.id.lblEventoVecino)).setText(getIntent().getStringExtra("vecino"));
-        ((TextView)findViewById(R.id.lblEventoFecha)).setText(getIntent().getStringExtra("evento_fecha"));
+        ((TextView)findViewById(R.id.lblEventoFecha)).setText(fecha);
+
+        try {
+            latitud = Double.valueOf(getIntent().getStringExtra("latitud"));
+            longitud = Double.valueOf(getIntent().getStringExtra("longitud"));
+        }
+        catch (Exception ex) {
+            latitud = getIntent().getDoubleExtra("latitud", 0);
+            longitud = getIntent().getDoubleExtra("longitud", 0);
+        }
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.frameHeader, EncabezadoFragment.newInstance(getResources().getString(R.string.tituloEvento)));
         ft.commit();
 
-        findViewById(R.id.layoutCalificacion).setEnabled(verCalificacion);
+        if (!verCalificacion) {
+            findViewById(R.id.layoutCalificacion).setVisibility(View.GONE);
+        }
 
         ratingBar = findViewById(R.id.ratingBar);
         txtCalificacion = findViewById(R.id.txtCalificacion);
@@ -90,8 +116,7 @@ public class EventoActivity extends AppCompatActivity implements OnMapReadyCallb
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        LatLng eventoPosicion = new LatLng(getIntent().getDoubleExtra("latitud", 0),
-                getIntent().getDoubleExtra("longitud", 0));
+        LatLng eventoPosicion = new LatLng(latitud, longitud);
         googleMap.addMarker(new MarkerOptions().position(eventoPosicion)
                 .title("Ubicación del Evento"));
 

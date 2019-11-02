@@ -101,6 +101,12 @@ public class MisDenunciasActivity extends AppCompatActivity {
     }
 
     private void actualizarDenuncias(ArrayList<Evento> denuncias, Context thisContext) {
+        if (denuncias.size() == 0) {
+            Toast mensaje = Toast.makeText(getApplicationContext(), thisContext.getString(R.string.mis_denuncias_vacio), Toast.LENGTH_SHORT);
+            mensaje.show();
+            return;
+        }
+
         for (final Evento e: denuncias) {
             TableRow tbrow = new TableRow(thisContext);
 

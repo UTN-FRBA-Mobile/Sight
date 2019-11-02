@@ -91,6 +91,12 @@ public class MisNotificacionesActivity extends AppCompatActivity {
     }
 
     private void actualizarNotificaciones(ArrayList<Evento> notificaciones, Context thisContext) {
+        if (notificaciones.size() == 0) {
+            Toast mensaje = Toast.makeText(getApplicationContext(), thisContext.getString(R.string.mis_notificaciones_vacio), Toast.LENGTH_SHORT);
+            mensaje.show();
+            return;
+        }
+
         for (final Evento e: notificaciones) {
             TableRow tbrow = new TableRow(thisContext);
 

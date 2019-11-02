@@ -29,7 +29,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -43,7 +42,6 @@ import ar.com.sight.android.comun.Gps;
 
 public class SosActivity extends AppCompatActivity  implements SurfaceHolder.Callback {
     private GoogleMap mMap;
-    private Marker myMarker;
     private boolean cancelar = false;
 
     private MediaRecorder recorder;
@@ -51,7 +49,7 @@ public class SosActivity extends AppCompatActivity  implements SurfaceHolder.Cal
     private CamcorderProfile camcorderProfile;
     private Camera camera;
 
-    boolean recording = false;
+    static boolean recording = false;
     boolean previewRunning = false;
 
     private Context thisContext = null;
@@ -61,6 +59,8 @@ public class SosActivity extends AppCompatActivity  implements SurfaceHolder.Cal
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         camcorderProfile = CamcorderProfile.get(CamcorderProfile.QUALITY_HIGH);
+
+        recording = false;
 
         setContentView(R.layout.activity_sos);
 
@@ -80,21 +80,67 @@ public class SosActivity extends AppCompatActivity  implements SurfaceHolder.Cal
         holder.addCallback(this);
         holder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
 
-        thisContext = this;
+        thisContext = getApplicationContext();
         final Button btnCancelar = findViewById(R.id.btnCancelar);
         btnCancelar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 cancelar = true;
-               // Intent mainIntent = new Intent().setClass(SosActivity.this, SosActivity.class);
-              //  startActivity(mainIntent);
+                Intent mainIntent = new Intent().setClass(SosActivity.this, MenuPrincipalActivity.class);
+                startActivity(mainIntent);
             }
+        });
+
+        mapFragment.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap googleMap) {
+                try {
+
+
+                    mMap = googleMap;
+                    mMap.setMyLocationEnabled(true);
+                    Location loc = Gps.getLocation();
+                    CameraPosition camPos = new CameraPosition.Builder()
+                            .target(new LatLng(loc.getLatitude(), loc.getLongitude()))
+                            .zoom(18)
+                            .bearing(loc.getBearing())
+                            .build();
+                    CameraUpdate camUpd3 = CameraUpdateFactory.newCameraPosition(camPos);
+                    googleMap.animateCamera(camUpd3);
+                    final Marker marker = mMap.addMarker(new MarkerOptions().position(new LatLng(loc.getLatitude(), loc.getLongitude())).draggable(true));
+
+                    mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener()
+                    {
+
+                        @Override
+                        public boolean onMarkerClick(Marker arg0) {
+                            // Creating a marker
+                            Double lati2 = marker.getPosition().latitude;
+                            Double long2 = marker.getPosition().longitude;
+                            Toast.makeText(getBaseContext(), "Latitud del marcador" + lati2, Toast.LENGTH_LONG).show();
+                            Toast.makeText(getBaseContext(), "Longitud del marcador" + long2, Toast.LENGTH_LONG).show();
+                            return true;
+                        }
+
+                    });
+
+
+                } catch (Exception e) {
+                }
+
+
+
+
+
+            }
+
+
         });
 
         final Timer timer = new Timer();
 
         final TimerTask task = new TimerTask() {
-            int contador = 5;
+            int contador = 20;
 
             @Override
             public void run() {
@@ -105,6 +151,19 @@ public class SosActivity extends AppCompatActivity  implements SurfaceHolder.Cal
                         Sight.sendEvento(thisContext, 3);
                         btnCancelar.setText("Evento Enviado");
                         cancelar = true;
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
+                        Intent mIntent = new Intent(thisContext, FileUploadService.class);
+                        mIntent.putExtra("mFilePath", filename);
+                        FileUploadService.enqueueWork(thisContext, mIntent);
+
+                        Intent mainIntent = new Intent().setClass(SosActivity.this, MenuPrincipalActivity.class);
+                        startActivity(mainIntent);
+
                     } else {
                         contador--;
                         btnCancelar.setText(String.format("Enviar evento en %s segundos", contador));
@@ -114,40 +173,9 @@ public class SosActivity extends AppCompatActivity  implements SurfaceHolder.Cal
         };
 
         timer.scheduleAtFixedRate(task, 1000, 1000);
-
-        mapFragment.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(GoogleMap googleMap) {
-                try {
-                    mMap = googleMap;
-                    mMap.setMyLocationEnabled(true);
-
-                    Location loc = Gps.getLocation();
-                    CameraPosition camPos = new CameraPosition.Builder()
-                            .target(new LatLng(loc.getLatitude(), loc.getLongitude()))
-                            .zoom(18)
-                            .bearing(loc.getBearing())
-                            .build();
-                    CameraUpdate camUpd3 = CameraUpdateFactory.newCameraPosition(camPos);
-                    googleMap.animateCamera(camUpd3);
-
-                    LatLng position = myMarker.getPosition();
-                    Toast.makeText(
-                            SosActivity.this,
-                            "Lat " + position.latitude + " " + "Long " + position.longitude,
-                            Toast.LENGTH_LONG).show();
-
-                } catch (Exception e) {
-                }
-            }
-        });
     }
 
     String filename = "";
-
-
-
-
 
     private void prepararGrabacion() {
         recorder = new MediaRecorder();
@@ -191,23 +219,6 @@ public class SosActivity extends AppCompatActivity  implements SurfaceHolder.Cal
             } catch (IOException e) {
             }
         }
-
-        final Timer timer = new Timer();
-
-        final TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-                Intent mIntent = new Intent(thisContext, FileUploadService.class);
-                mIntent.putExtra("mFilePath", filename);
-                FileUploadService.enqueueWork(thisContext, mIntent);
-
-                //Sight.sendVideoAdicional(thisContext, filename);
-
-                timer.cancel();
-            }
-        };
-
-        timer.schedule(task, 4000);
 
         recorder.setMaxDuration(3000); // 10 seconds
 
