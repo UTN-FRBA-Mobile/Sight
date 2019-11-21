@@ -2,6 +2,8 @@ package ar.com.sight.android;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -41,5 +43,19 @@ public class MainActivity extends AppCompatActivity {
         // Simulate a long loading process on application startup.
         Timer timer = new Timer();
         timer.schedule(task, SPLASH_SCREEN_DELAY);
+        //welcome message
+        showStartDialog();
+    }
+    private void showStartDialog(){
+        new AlertDialog.Builder(this)
+                .setTitle("bienvenido a Sight")
+                .setMessage("Usa el boton Robo para llamar a la policia, Emergencia para ambulancia, SOS para simular el boton bluetooth, Panico para compartir informacion, agrega vecinos de confianza para compartir notificaciones")
+                .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .create().show();
     }
 }
