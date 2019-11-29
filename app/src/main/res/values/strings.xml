@@ -67,5 +67,7 @@
     <string name="mis_notificaciones_vacio">No recibió ninguna notificación</string>
     <string name="mis_vecinos_confirmacion_borrado">¿Está seguro que desea eliminar al vecino %s de la lista de confianza?</string>
     <string name="mi_ficha_medica_confirmacion_guardado">¿Está seguro que desea actualizar la ficha médica?</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 
 </resources>
