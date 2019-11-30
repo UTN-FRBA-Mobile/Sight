@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private void showStartDialog(){
         new AlertDialog.Builder(this)
                 .setTitle("bienvenido a Sight")
-                .setMessage("Usa el boton Robo para llamar a la policia, Emergencia para ambulancia, SOS para simular el boton bluetooth, Adicionales para añadir informacion, agrega vecinos de confianza para compartir notificaciones")
+                .setMessage("Usa el boton Robo para llamar a la policia, Emergencia para ambulancia, SOS para simular el boton bluetooth, Panico para compartir informacion, agrega vecinos de confianza para compartir notificaciones")
                 .setPositiveButton("ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
